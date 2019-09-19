@@ -4,6 +4,7 @@ name: CI
 # yamllint disable-line rule:truthy
 on: [push]
 
+# yamllint disable rule:line-length
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -28,12 +29,11 @@ jobs:
         env:
           PACKER_URL: https://releases.hashicorp.com/packer
           PACKER_VERSION: 1.4.3
-          PACKER_FILE: packer_${PACKER_VERSION}_linux_amd64.zip
         run: |
           sudo apt-get update
           sudo apt-get install -y unzip wget
-          wget ${PACKER_URL}/${PACKER_VERSION}/${PACKER_FILE}
-          unzip ${PACKER_FILE}
+          wget ${PACKER_URL}/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip
+          unzip packer_${PACKER_VERSION}_linux_amd64.zip
           sudo mv packer /usr/local/bin
           echo "Packer Version: $(packer --version)"
       - name: Generate Packer Templates
