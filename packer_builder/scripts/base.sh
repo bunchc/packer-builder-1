@@ -41,7 +41,7 @@ enabled=1
 _EOF_
             sudo yum -y update
             sudo yum -y install epel-release
-            sudo yum -y install facter perl rsyslog sudo wget
+            sudo yum -y install perl rsyslog sudo wget
         fi
     fi
 fi
@@ -51,18 +51,18 @@ if [ -f /etc/os-release ]; then
     os_version_id="$(awk -F= '/^VERSION_ID/{ print $2}' /etc/os-release | sed 's/"//g')"
     if [[ $os_name = "Fedora" ]]; then
         if [[ $os_version_id = 22 ]]; then
-            sudo dnf -y install facter ruby rubygems
+            sudo dnf -y install ruby rubygems
             elif [[ $os_version_id -le 21 ]]; then
             sudo yum -y update
             sudo yum -y install dnf facter perl redhat-lsb-core rsyslog ruby rubygems wget
         fi
         elif [[ $os_name = *CentOS* ]]; then
-            if ! [ -x "$(command -v facter)" ]; then
-                echo 'Error: facter is not installed.' >&2
-                if [[ $os_version_id = 7 ]]; then
-                    sudo yum -y install http://download-ib01.fedoraproject.org/pub/epel/7/x86_64/Packages/f/facter-2.4.1-1.el7.x86_64.rpm
-                fi
+        if ! [ -x "$(command -v facter)" ]; then
+            echo 'Error: facter is not installed.' >&2
+            if [[ $os_version_id = 7 ]]; then
+                sudo yum -y install http://download-ib01.fedoraproject.org/pub/epel/7/x86_64/Packages/f/facter-2.4.1-1.el7.x86_64.rpm
             fi
+        fi
         elif [[ $os_name = *openSUSE* ]]; then
         if [[ $os_name = "openSUSE Tumbleweed" || $os_name = "openSUSE Leap" ]]; then
             # Need to sleep for a period of time to ensure zypper completes processes on first startup
@@ -137,8 +137,8 @@ if [[ $os_family = "Debian" || $os = "Debian" ]]; then
         elif [[ $os = "Fedora" ]]; then
         if [[ $os_version_id -ge 22 ]]; then
             if [[ $os_version_id -lt 30 ]]; then
-            sudo dnf -y install python-devel python-dnf
-        else
+                sudo dnf -y install python-devel python-dnf
+            else
                 # initscripts should be removed at some point
                 sudo dnf -y install initscripts python-devel python3-dnf
             fi
